@@ -9,7 +9,7 @@ bin/
 .classpath
 .project
 *.class
-*settings/*
+.settings
 #Custom
 report*
 storage*
