@@ -1,1 +1,14 @@
-/bin/
+.idea/
+*.iml
+*.iws
+log/
+target/
+*/static_data/*
+#Eclipse configuration
+.classpath
+.project
+*.class
+*settings/*
+#Custom
+report*
+storage*
