@@ -18,8 +18,8 @@ import java.util.regex.Pattern;
 /**
  * @author vlad24 
  * <br>
- * Class for sorting big files.
- * It splits the file into chunks, sorts it independently and then merges it in another big file.
+ * Class for sorting big files and greping through them.
+ * Sorting is done by splitting the file into chunks, sorts it independently and then merges it in another big file.
  */
 public class BigFileManager {
 
