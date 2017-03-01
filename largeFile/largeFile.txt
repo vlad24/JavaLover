@@ -1,0 +1,13 @@
+5cat
+0donkey
+1spider
+9monkey
+1rat
+8goose
+0bat
+2deer
+4dog
+1mouse
+1tiger
+3lion
+7fish
