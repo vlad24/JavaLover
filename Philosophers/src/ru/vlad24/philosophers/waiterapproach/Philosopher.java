@@ -1,4 +1,4 @@
-package ru.vlad24.philosophers;
+package ru.vlad24.philosophers.waiterapproach;
 
 import java.util.Random;
 import java.util.logging.Level;

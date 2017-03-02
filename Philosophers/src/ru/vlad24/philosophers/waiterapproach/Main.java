@@ -1,4 +1,4 @@
-package ru.vlad24.philosophers;
+package ru.vlad24.philosophers.waiterapproach;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
