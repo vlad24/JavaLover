@@ -4,12 +4,14 @@
 log/
 target/
 bin/
-*/static_data/*
 #Eclipse configuration
+.pydevproject
 .classpath
 .project
 *.class
 .settings
 #Custom
-report*
+*.dataset
 storage*
+report*
+demo*

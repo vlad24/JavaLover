@@ -21,7 +21,7 @@ public class SubsequenceImpl implements Subsequence {
 					break;
 				}
 			}
-			return (i == fixed.size() - 1 && j <= changed.size());
+			return (i == fixed.size() && j <= changed.size());
 		}
 		return false;
 	}
