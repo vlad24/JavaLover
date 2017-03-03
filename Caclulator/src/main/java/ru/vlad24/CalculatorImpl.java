@@ -1,19 +1,29 @@
 package ru.vlad24;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.EmptyStackException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
 public class CalculatorImpl implements Calculator {
 
-	public Double evaluate(String exp) {
+	private DecimalFormat outputFormatter;
+	
+	public CalculatorImpl() {
+		super();
+		outputFormatter = new DecimalFormat(("#.####"));
+	}
+
+
+	public String evaluate(String exp) {
 		Queue<String> inverseNotation;
 		try {
 			inverseNotation = toInverseNotation(exp);
-			return inverseCalculate(inverseNotation);
-		} catch (ParseException e) {
-			e.printStackTrace();
+			return outputFormatter.format(inverseCalculate(inverseNotation));
+		} catch (Exception e) {
+			//e.printStackTrace();
 		}
 		return null;
 	}
@@ -27,7 +37,16 @@ public class CalculatorImpl implements Calculator {
 				auxStack.push(Double.parseDouble(nextToken));
 			}else{
 				Double op1 = auxStack.pop();
-				Double op2 = auxStack.pop();
+				Double op2 = null;
+				if (Lexer.isMinus(nextToken)){
+					try{
+						op2 = auxStack.pop();
+					}catch(EmptyStackException e){
+						op2 = 0.0;
+					}
+				}else{
+					op2 = auxStack.pop();
+				}
 				auxStack.push( performOperation(op1, op2, nextToken));
 			}
 		}
@@ -52,11 +71,12 @@ public class CalculatorImpl implements Calculator {
 	}
 
 
-	private Queue<String> toInverseNotation(String exp) throws ParseException {
+	private Queue<String> toInverseNotation(String initialExp) throws ParseException {
 		Stack<String> auxStack  = new Stack<String>();
 		Queue<String> output  = new LinkedList<String>();
 		int i = 0;
 		String nextToken = null;
+		String exp = initialExp.replace(" ", "");
 		do{
 			nextToken = getNextToken(exp, i);
 			if (nextToken != null){
@@ -96,7 +116,7 @@ public class CalculatorImpl implements Calculator {
 
 
 	private String getNextToken(String exp, int i) throws ParseException {
-		int nextTokenBound = Lexer.getNextTokenBound(exp, i);
+		int nextTokenBound = Lexer.jumpOverNextToken(exp, i);
 		if (nextTokenBound != -1){
 			if (nextTokenBound == i){
 				return null;
@@ -104,7 +124,7 @@ public class CalculatorImpl implements Calculator {
 				return exp.substring(i, nextTokenBound);
 			}
 		}else{
-			throw new ParseException("Error at parsing" + exp, i);
+			throw new ParseException("Error at parsing: " + exp, i);
 		}
 	}
 

@@ -2,58 +2,58 @@ package ru.vlad24;
 
 public class Lexer {
 
-	enum STATE {START, DIGIT, POINT, AFTER_POINT, SUCCESS, FAIL};
+	enum LexState {START, DIGIT, POINT, AFTER_POINT, SUCCESS, FAIL};
 	
-	public static  int getNextTokenBound(String exp, int i) {
-		STATE state = STATE.START;
+	public static int jumpOverNextToken(String expression, int i) {
+		LexState state = LexState.START;
 		boolean needToStop = false;
 		boolean success = false;
-		while (i < exp.length() && !needToStop && !success){
-			char c = exp.charAt(i);
+		while (i < expression.length() && !needToStop && !success){
+			char c = expression.charAt(i);
 			switch (state) {
 			case START:{
 				if (isDigit(c)){
-					state = STATE.DIGIT;
+					state = LexState.DIGIT;
 					i++;
 				}else if(isPoint(c)){
-					state = STATE.FAIL;
+					state = LexState.FAIL;
 				}else if(isSpecial(c)){
-					state = STATE.SUCCESS;
+					state = LexState.SUCCESS;
 					i++;
 				}
 				break;
 			}
 			case DIGIT:{
 				if (isDigit(c)){
-					state = STATE.DIGIT;
+					state = LexState.DIGIT;
 					i++;
 				}else if(isPoint(c)){
-					state = STATE.POINT;
+					state = LexState.POINT;
 					i++;
 				}else if(isSpecial(c)){
-					state = STATE.SUCCESS;
+					state = LexState.SUCCESS;
 				}
 				break;
 			}
 			case POINT:{
 				if (isDigit(c)){
-					state = STATE.AFTER_POINT;
+					state = LexState.AFTER_POINT;
 					i++;					
 				}else if(isPoint(c)){
-					state = STATE.FAIL;
+					state = LexState.FAIL;
 				}else if(isSpecial(c)){
-					state = STATE.FAIL;
+					state = LexState.FAIL;
 				}
 				break;
 			}
 			case AFTER_POINT:{
 				if (isDigit(c)){
-					state = STATE.AFTER_POINT;
+					state = LexState.AFTER_POINT;
 					i++;					
 				}else if(isPoint(c)){
-					state = STATE.FAIL;
+					state = LexState.FAIL;
 				}else if(isSpecial(c)){
-					state = STATE.SUCCESS;
+					state = LexState.SUCCESS;
 				}
 				break;
 			}
@@ -84,25 +84,25 @@ public class Lexer {
 		return c == '+' || c == '-' || c == '/' || c == '*' || c == '(' || c == ')';
 	}
 
-	public static boolean isNumber(String nextToken) {
+	public static boolean isNumber(String token) {
 		try {
-			Double.parseDouble(nextToken);
+			Double.parseDouble(token);
 			return true;
 		}catch(NumberFormatException e){
 			return false;
 		}
 	}
 
-	public static boolean isSign(String nextToken) {
-		return nextToken.equals("+") || nextToken.equals("-") || nextToken.equals("*") || nextToken.equals("/"); 
+	public static boolean isSign(String token) {
+		return token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/"); 
 	}
 
-	public static boolean isOpenBracket(String nextToken) {
-		return nextToken.equals("(");
+	public static boolean isOpenBracket(String token) {
+		return token.equals("(");
 	}
 
-	public static boolean isCloseBracket(String nextToken) {
-		return nextToken.equals(")");
+	public static boolean isCloseBracket(String token) {
+		return token.equals(")");
 	}
 
 	public static int weight(String token) {
@@ -117,5 +117,9 @@ public class Lexer {
 		}else{
 			return 0;
 		}
+	}
+
+	public static boolean isMinus(String token) {
+		return token.equals("-");
 	}
 }
