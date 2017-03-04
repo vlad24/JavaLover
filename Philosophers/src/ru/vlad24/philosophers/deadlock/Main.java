@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class Main {
 
 	private static final int PHILOSOPHER_AMOUNT     = 5;
-	private static final int EXECUTION_TIME_SECONDS = 20;
+	private static final int EXECUTION_TIME_SECONDS = 10;
 	
 	
 	private static Logger log = Logger.getLogger(Main.class.getName());
@@ -21,13 +21,13 @@ public class Main {
 		ArrayList<Future<?>> executionResults = new ArrayList<>();
 		// Create philosophers
 		Philosopher[] philosophers = new Philosopher[PHILOSOPHER_AMOUNT];
-		for (int i = 0; i < 5; i++){
+		for (int i = 0; i < PHILOSOPHER_AMOUNT; i++){
 			philosophers[i] = new Philosopher(i);
 		}
 		// Create a waiter for these philosophers
-		Table.init(PHILOSOPHER_AMOUNT);
+		DeadlockTable.init(PHILOSOPHER_AMOUNT);
 		for (int i = 0; i < PHILOSOPHER_AMOUNT; i++){
-			philosophers[i].sit(Table.getInstance());
+			philosophers[i].sit(DeadlockTable.getInstance());
 			executionResults.add(restaurant.submit(philosophers[i]));
 		}
 		//
@@ -40,21 +40,6 @@ public class Main {
 			restaurant.shutdownNow();
 			restaurant.awaitTermination(2, TimeUnit.SECONDS);
 		}
-		if (checkResults(executionResults)){
-			log.log(Level.INFO, "All philosophers are eventually alive and happy to be served by such a waiter");
-		}else{
-			log.log(Level.SEVERE, "Unfortunately some philosophers died from starvation");
-		}
 	}
 
-	private static boolean checkResults(ArrayList<Future<?>> executionResults) {
-		boolean isSuccess = true;
-		for (Future<?> future : executionResults) {
-			if (future.isCancelled()){
-				isSuccess = false;
-				break;
-			}
-		}
-		return isSuccess;
-	}
 }

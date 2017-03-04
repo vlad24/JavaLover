@@ -18,19 +18,13 @@ public class Philosopher implements Runnable{
 	private static final int THINKING_TIME_LOWER_BOUND_MS = 200;
 	private static final int EATING_TIME_UPPER_BOUND_MS   = 400;
 	private static final int EATING_TIME_LOWER_BOUND_MS   = 300;
-	/**
-	 * Number indicating above which hunger level a philosopher will not be able to function.
-	 */
-	private static final int CRITICAL_HUNGER_LEVEL 		  = 10;
 
 	Logger log = Logger.getLogger(Philosopher.class.getName());
 
 	private int position;
-	private int hunger;
 	private Random random;
 	private boolean isFunctioning;
-	private boolean isEating;
-	private Table table;
+	private DeadlockTable table;
 
 
 	/**
@@ -39,27 +33,17 @@ public class Philosopher implements Runnable{
 	public Philosopher(int position) {
 		super();
 		this.position = position;
-		this.hunger = 0;
 		this.isFunctioning = false;
 		this.random = new Random();
 		this.table = null;
 	}
 
 	/**
-	 * Sets a waiter for the philosopher.
-	 * @param waiter waiter to which philosophers will make orders
+	 * Sets a table for the philosopher.
+	 * @param table at which philosopher will sit
 	 */
-	public void sit(Table waiter){
-		this.table = waiter;
-	}
-
-
-	/**
-	 * Each philosopher has a level of hunger. It varies from 0 to 10 (all bounds inclusive). If it reaches 10 the philosopher dies.
-	 * @return int level of hunger
-	 */
-	public int getHunger() {
-		return hunger;
+	public void sit(DeadlockTable table){
+		this.table = table;
 	}
 
 
@@ -91,11 +75,9 @@ public class Philosopher implements Runnable{
 	 * While forks and food are absent ph. becomes more hungry (hunger level increases). 
 	 */
 	private void tryEat() {
-		if (!isEating){
-			table.takeForks(this.position);
-			eat();
-			table.releaseForks(this.position);
-		}
+		table.takeForks(this.position);
+		eat();
+		table.releaseForks(this.position);
 	}
 
 	/**
@@ -103,15 +85,11 @@ public class Philosopher implements Runnable{
 	 * Hunger level falls to 0.
 	 */
 	public void eat() {
-		isEating = true;
 		try {
-			log.log(Level.INFO, String.format(">>>>>> Philosopher%d: eating", position, hunger));
+			log.log(Level.INFO, String.format(">>>>>> Philosopher%d: eating", position));
 			Thread.sleep(SLOWNESS_FACTOR * getRandomInt(EATING_TIME_LOWER_BOUND_MS, EATING_TIME_UPPER_BOUND_MS));
 		} catch (InterruptedException e) {
 			isFunctioning = false;
-		}finally{
-			hunger = 0;		
-			isEating = false;
 		}
 	}
 
