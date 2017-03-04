@@ -5,7 +5,10 @@ import java.util.List;
 public class SubsequenceImpl implements Subsequence {
 
 
-	public boolean find(List<? extends Object> fixed, List<? extends Object> changed) {
+	public boolean find(List<?> fixed, List<?> changed) {
+		if (fixed == null || changed == null){
+			return false;
+		}
 		if (fixed.size() <= changed.size()){
 			int i = 0;
 			int j = 0;
