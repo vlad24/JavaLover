@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 /**
  * @author vlad24
- * Class that guarantees deadlock for philosophers trying eating at it 
+ * Class representing a table that guarantees deadlock for philosophers trying eating at it 
  * 
  */
 public class DeadlockTable {
@@ -20,7 +20,7 @@ public class DeadlockTable {
 
 	/**
 	 * Initializes the singleton instance.
-	 * @param guests list of guests who will be served by the waiter
+	 * @param guestAmount amount of guests who will sit at this table
 	 */
 	public static void init(int guestsAmount){
 		if (!inited){
@@ -53,12 +53,15 @@ public class DeadlockTable {
 			fork[i] = new ReentrantLock();
 			needToAct[i] = new AtomicBoolean(false);
 		}
+		//First philosopher needs to start
 		needToAct[0].set(true);
 	}
 
 	/**
-	 * Method that guaranties deadlock
-	 * @param guestId position of the guest at the table
+	 * Method that guarantees deadlock. When a philosopher tries to take a fork, it takes only
+	 * left one and then notifies left guest that it needs also take forks.
+	 * After left guest is ready(readiness ==  taking both forks) the current guest tries to occupy its right fork. 
+	 * @param guestId position of the guest at the table, trying take his fork
 	 */
 	public void takeForks(int guestId){
 		if (Thread.currentThread().isInterrupted() || !isWorking){
