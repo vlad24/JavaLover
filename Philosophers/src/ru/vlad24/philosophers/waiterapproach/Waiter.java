@@ -17,7 +17,7 @@ public class Waiter implements Runnable{
 
 	/**
 	 * Initializes the singleton instance.
-	 * @param guests lsit of guests who will be served by the waiter
+	 * @param guests list of guests who will be served by the waiter
 	 */
 	public static void init(Philosopher[] guests){
 		if (!inited){
@@ -76,6 +76,7 @@ public class Waiter implements Runnable{
 			trayLock.lock();
 			if (fork[left].tryLock()){
 				if (fork[right].tryLock()){
+					log.log(Level.INFO, String.format("Waiter feeding %d", guestId));
 					guests[guestId].eat();
 					fork[left].unlock();
 					fork[right].unlock();
@@ -99,7 +100,7 @@ public class Waiter implements Runnable{
 	 * Makes an order for a guest. It means that this guest will be fed as soon as possible after time of invocation of the method.
 	 * @param guestId position of the guest at the table
 	 */
-	public void order(int guestId) {
+	public void makeOrder(int guestId) {
 		if (Thread.currentThread().isInterrupted() || !isWorking){
 			return;
 		}

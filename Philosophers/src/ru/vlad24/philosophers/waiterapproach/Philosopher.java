@@ -31,6 +31,7 @@ public class Philosopher implements Runnable{
 	private boolean isFunctioning;
 	private boolean isEating;
 	private Waiter waiter;
+	private Object eatBell;
 
 
 	/**
@@ -43,6 +44,7 @@ public class Philosopher implements Runnable{
 		this.isFunctioning = false;
 		this.random = new Random();
 		this.waiter = null;
+		this.eatBell = new Object();
 	}
 
 	/**
@@ -93,7 +95,7 @@ public class Philosopher implements Runnable{
 	private void tryEat() {
 		if (!isEating){
 			if (hunger == 0){
-				waiter.order(this.position);
+				waiter.makeOrder(this.position);
 			}else{
 				log.log(Level.INFO, String.format("Philosopher%d: hungry at %d", position, hunger));
 				if (hunger >= CRITICAL_HUNGER_LEVEL){
@@ -109,6 +111,9 @@ public class Philosopher implements Runnable{
 	 * Hunger level falls to 0.
 	 */
 	public void eat() {
+		synchronized (eatBell) {
+			eatBell.notify();
+		}
 		isEating = true;
 		try {
 			log.log(Level.INFO, String.format(">>>>>> Philosopher%d(hungry at %d): eating", position, hunger));
@@ -123,10 +128,13 @@ public class Philosopher implements Runnable{
 
 	/**
 	 * Method that simulates philosoher's thinking process.
+	 * If waiter brings food - eat it!
 	 */
 	private void think() {
 		try {
-			Thread.sleep(SLOWNESS_FACTOR * getRandomInt(THINKING_TIME_LOWER_BOUND_MS, THINKING_TIME_UPPER_BOUND_MS));
+			synchronized (eatBell) {
+				eatBell.wait(SLOWNESS_FACTOR * getRandomInt(THINKING_TIME_LOWER_BOUND_MS, THINKING_TIME_UPPER_BOUND_MS));
+			}
 		} catch (InterruptedException e) {
 			isFunctioning = false;
 		}

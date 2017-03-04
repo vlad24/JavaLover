@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class Main {
 
 	private static final int PHILOSOPHER_AMOUNT     = 5;
-	private static final int EXECUTION_TIME_SECONDS = 2;
+	private static final int EXECUTION_TIME_SECONDS = 7;
 	
 	
 	private static Logger log = Logger.getLogger(Main.class.getName());
