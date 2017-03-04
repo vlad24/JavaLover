@@ -104,4 +104,20 @@ public class Tests {
 		org.junit.Assert.assertFalse(subseqFinder.find(fixed, changed));
 	}
 	
+	@Test
+	public void testDifferentTypes(){
+		changed = Arrays.asList("123".toCharArray());
+		fixed =   Arrays.asList(1,2,3);
+		org.junit.Assert.assertFalse(subseqFinder.find(fixed, changed));
+	}
+	
+	@Test
+	public void testNotNullSelfCompare(){
+		int[] selfCompared = new int[100];
+		for (int i = 0; i < 10; i++){
+			Arrays.fill(selfCompared, i);
+			org.junit.Assert.assertTrue(subseqFinder.find(Arrays.asList(selfCompared), Arrays.asList(selfCompared)));
+		}
+	}
+	
 }
