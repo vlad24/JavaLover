@@ -2,7 +2,7 @@ package ru.vlad24;
 
 public class Lexer {
 
-	enum LexState {START, DIGIT, POINT, AFTER_POINT, SUCCESS, FAIL};
+	enum LexState {START, DIGIT, SIGN, POINT, AFTER_POINT, SUCCESS, FAIL};
 	
 	public static int jumpOverNextToken(String expression, int i) {
 		LexState state = LexState.START;
@@ -17,9 +17,14 @@ public class Lexer {
 					i++;
 				}else if(isPoint(c)){
 					state = LexState.FAIL;
+				}else if(isSign(c)){
+					state = LexState.SIGN;
+					i++;
 				}else if(isSpecial(c)){
 					state = LexState.SUCCESS;
 					i++;
+				}else{
+					state = LexState.FAIL;
 				}
 				break;
 			}
@@ -32,6 +37,16 @@ public class Lexer {
 					i++;
 				}else if(isSpecial(c)){
 					state = LexState.SUCCESS;
+				}else{
+					state = LexState.FAIL;
+				}
+				break;
+			}
+			case SIGN:{
+				if (isDigit(c) || isBracket(c)){
+					state = LexState.SUCCESS;
+				}else{
+					state = LexState.FAIL;
 				}
 				break;
 			}
@@ -42,6 +57,8 @@ public class Lexer {
 				}else if(isPoint(c)){
 					state = LexState.FAIL;
 				}else if(isSpecial(c)){
+					state = LexState.FAIL;
+				}else{
 					state = LexState.FAIL;
 				}
 				break;
@@ -54,6 +71,8 @@ public class Lexer {
 					state = LexState.FAIL;
 				}else if(isSpecial(c)){
 					state = LexState.SUCCESS;
+				}else{
+					state = LexState.FAIL;
 				}
 				break;
 			}
@@ -81,7 +100,15 @@ public class Lexer {
 	}
 
 	public static boolean isSpecial(char c) {
-		return c == '+' || c == '-' || c == '/' || c == '*' || c == '(' || c == ')';
+		return isBracket(c) || isSign(c);
+	}
+	
+	public static boolean isBracket(char c) {
+		return c == '(' || c == ')';
+	}
+	
+	public static boolean isSign(char c) {
+		return c == '+' || c == '-' || c == '/' || c == '*' ;
 	}
 
 	public static boolean isNumber(String token) {
