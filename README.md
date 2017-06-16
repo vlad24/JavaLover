@@ -8,6 +8,8 @@ Here I dump all things that I have implemented in such cases.
 ## Index
 ### Algorithms Experiments
 Manually implemented sorts, trees, permuatation algos, fast power, etc go here.
+### Calculator
+Calculator, evaluating arithmetic expressions. Negative, float-point numbers are supported. Tested with multiple unit tests. 
 ### Duplicate Finder
 Finding duplicates in two files.
 ### JSystem
