@@ -1,7 +1,8 @@
 # Java Lover
 ### Disclaimer
 When I am free in leisure time I am keen on reading some IT related articles. 
-Sometimes you may face some material which you want to get your hands on or sometimes you want to review something you knew, studied, etc. 
+Sometimes you may face some material which you want to get your hands on.
+Also sometimes you want to review something you knew, studied, etc. 
 Here I dump all things that I have implemented in such cases.
 *Also here I put small interview tasks that I was sometime ago asked to implement.*
 
