@@ -15,6 +15,8 @@ Calculator, evaluating arithmetic expressions. Negative, float-point numbers are
 Finding duplicates in two files.
 ### JSystem
 Basic socket based server-client app.
+### JUnitProbes
+Playing around with JUnit framework
 ### Java Lang Examples
 Here I try some features of Java (e.g. functional programming, play with OOP, etc)
 ### OpenWay Maze
