@@ -2,8 +2,8 @@ package ru.vlad24.sorts;
 
 public class QuickSorter implements Sorter{
 
-	@Override
-	 public void sort(int[] array) {
+    @Override
+    public void sort(int[] array) {
         quickSort(array, 0, array.length - 1);
     }
 
